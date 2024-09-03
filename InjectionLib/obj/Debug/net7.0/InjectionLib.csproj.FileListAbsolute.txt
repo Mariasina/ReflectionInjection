@@ -1,0 +1,12 @@
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\bin\Debug\net7.0\InjectionLib.deps.json
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\bin\Debug\net7.0\InjectionLib.dll
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\bin\Debug\net7.0\InjectionLib.pdb
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.csproj.AssemblyReference.cache
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.AssemblyInfoInputs.cache
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.AssemblyInfo.cs
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.csproj.CoreCompileInputs.cache
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.dll
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\refint\InjectionLib.dll
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\InjectionLib.pdb
+C:\Users\disrct\Desktop\Maria Carolina\Reflection\InjectionLib\obj\Debug\net7.0\ref\InjectionLib.dll

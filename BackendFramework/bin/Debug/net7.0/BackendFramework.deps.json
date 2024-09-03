@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "BackendFramework/1.0.0": {
+        "dependencies": {
+          "InjectionLib": "1.0.0"
+        },
+        "runtime": {
+          "BackendFramework.dll": {}
+        }
+      },
+      "InjectionLib/1.0.0": {
+        "runtime": {
+          "InjectionLib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BackendFramework/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "InjectionLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
