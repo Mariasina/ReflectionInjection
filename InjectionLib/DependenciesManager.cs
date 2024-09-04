@@ -25,7 +25,7 @@ public class DependenciesManager<A> where A : Attribute
             
             var instance = constructor.Invoke(Array.Empty<object>());
             
-            var injectedFields = root.GetFields()
+            var injectedFields = root.GetRuntimeFields()
                 .Where(property => property.GetCustomAttributes()
                     .Any(attribute => attribute is InjectedAttribute)
                 );
@@ -51,7 +51,7 @@ public class DependenciesManager<A> where A : Attribute
         foreach (var config in configs)
         {
             var beans = config
-                .GetMethods()
+                .GetRuntimeMethods()
                 .Where(method => method.GetCustomAttributes()
                     .Any(attribute => attribute is BeanAttribute)
                 );
@@ -66,7 +66,7 @@ public class DependenciesManager<A> where A : Attribute
                 var result = bean.Invoke(configInstance, Array.Empty<object>()) 
                 ?? throw new NullReferenceException(); 
 
-                if(!dependencies.TryAdd(result.GetType(), result))
+                if(!dependencies.TryAdd(bean.ReturnType, result))
                     throw new DuplicatedDepencyTypeException();
             }
         }

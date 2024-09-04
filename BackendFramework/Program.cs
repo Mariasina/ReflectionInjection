@@ -7,15 +7,21 @@ var obama = manager.Get<President>();
 
 obama.SayHello();
 
+public abstract class Animal {}
+public class Cachorro : Animal {}
+
 
 [Configuration]
 public class DependenciesConfiguration {
 
     [Bean]
-    public string NomeDoObama() => "Barack Hussein Obama II";
+    private string NomeDoObama() => "Barack Hussein Obama II";
 
     [Bean]
     public int IdadeDoObama() => 63;
+
+    [Bean]
+    protected Animal Animal() => new Cachorro();
 
     public float PesoDoObama() => 75;
 }
@@ -25,12 +31,16 @@ public class DependenciesConfiguration {
 public class President {
 
     [Injected]
-    public string NomeDoObama;
+    private string NomeDoObama;
 
     public string MulherDoObama;
+
+    [Injected]
+    Animal PresidentialPet;
 
     public void SayHello()
     {
         Console.WriteLine($"Hi! my name is {NomeDoObama}");
+        Console.WriteLine($"Meu pet é um {PresidentialPet.GetType().Name}");
     }
 }
