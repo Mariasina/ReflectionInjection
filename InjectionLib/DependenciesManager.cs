@@ -1,10 +1,12 @@
+using System.Collections;
 using System.Reflection;
 
 namespace InjectionLib;
 
 public class DependenciesManager<R> where R : Attribute
 {
-    private Dictionary<object, object> dependencies = new();
+    private Dictionary<Type, MethodInfo> dependencies = new();
+    private Dictionary<MethodInfo, object> configurations = new();
     private Dictionary<object, object> rootDependencies = new();
 
     public T Get<T>()
@@ -27,25 +29,9 @@ public class DependenciesManager<R> where R : Attribute
         ConfigureBeans(configs);
 
         var roots = FilterAttribute<R>(types);
-        foreach (var root in roots)
-        {
-            var constructor = root.GetConstructor(Array.Empty<Type>()) 
-                ?? throw new NoEmptyConstructorException();
-            
-            var instance = constructor.Invoke(Array.Empty<object>());
-            
-            var injectedFields = root.GetRuntimeFields()
-                .Where(property => property.GetCustomAttributes()
-                    .Any(attribute => attribute is InjectedAttribute)
-                );
-            
-            foreach (var field in injectedFields)
-                field.SetValue(instance, dependencies[field.FieldType]);
-            
-            if(!rootDependencies.TryAdd(root, instance))
-                throw new DuplicatedDepencyTypeException();
-        }
+        SetUpRoots(roots);
     }
+
 
     private static IEnumerable<Type> FilterAttribute<T>(Type[] types)
         where T : Attribute
@@ -54,6 +40,7 @@ public class DependenciesManager<R> where R : Attribute
             .Any(attribute => attribute is T)
         );
     }
+
 
     private void ConfigureBeans(IEnumerable<Type> configs)
     {
@@ -72,12 +59,50 @@ public class DependenciesManager<R> where R : Attribute
 
             foreach (var bean in beans)
             {
-                var result = bean.Invoke(configInstance, Array.Empty<object>()) 
-                ?? throw new NullReferenceException(); 
-
-                if(!dependencies.TryAdd(bean.ReturnType, result))
+                if(!dependencies.TryAdd(bean.ReturnType, bean))
                     throw new DuplicatedDepencyTypeException();
+                configurations.Add(bean, configInstance);
             }
         }
+    }
+
+    private void SetUpRoots(IEnumerable<Type> roots)
+    {
+        foreach (var root in roots)
+        {
+            var constructor = root.GetConstructor(Array.Empty<Type>()) 
+                ?? throw new NoEmptyConstructorException();
+            
+            var instance = constructor.Invoke(Array.Empty<object>());
+            
+            var injectedFields = root.GetRuntimeFields()
+                .Where(property => property.GetCustomAttributes()
+                    .Any(attribute => attribute is InjectedAttribute)
+                );
+            
+            foreach (var field in injectedFields)
+                field.SetValue(instance, BuildBean(field.FieldType));
+
+            if(!rootDependencies.TryAdd(root, instance))
+                throw new DuplicatedDepencyTypeException();
+        }
+    }
+
+    private object BuildBean(Type type)
+    {
+        var dp = dependencies[type];
+        var bean = dp.Invoke(configurations[dp], Array.Empty<object>())!;
+
+        var injectedFields = bean.GetType().GetRuntimeFields()
+            .Where(property => property.GetCustomAttributes()
+                .Any(attribute => attribute is InjectedAttribute)
+            );
+
+        foreach (var field in injectedFields)
+        {
+            field.SetValue(bean, BuildBean(field.FieldType));
+        }
+
+        return bean;
     }
 }

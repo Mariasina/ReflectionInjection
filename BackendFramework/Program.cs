@@ -2,43 +2,57 @@
 
 var manager = new DependenciesManager<RestController>();
 
-var obama = manager.Get<President>();
+var obama = manager.Get<AuthController>();
 
 obama.SayHello();
 
-public abstract class Animal {}
-public class Cachorro : Animal {}
+public abstract class Service {}
+
+
+public class Login : Service {
+
+    [Injected]
+    string NomeDoPrograma;
+
+    [Injected]
+    public JwtTokenManager tokenManager;
+}
+
+public class JwtTokenManager : Service {
+
+    [Injected]
+    string NomeDoPrograma;
+}
 
 
 [Configuration]
 public class DependenciesConfiguration {
 
     [Bean]
-    private string NomeDoObama() => "Barack Hussein Obama II";
+    protected Login loginService() => new Login();
 
     [Bean]
-    public int IdadeDoObama() => 63;
+    protected string NomeDoPrograma() => "RestAPI";
 
     [Bean]
-    protected Animal Animal() => new Cachorro();
+    protected JwtTokenManager TokenManager() => new JwtTokenManager();
 
-    public float PesoDoObama() => 75;
 }
 
 
-public class President {
+[RestController]
+public class AuthController {
 
     [Injected]
-    private string NomeDoObama;
-
-    public string MulherDoObama;
+    private string NomeDoPrograma;
 
     [Injected]
-    Animal PresidentialPet;
+    Login loginService;
 
     public void SayHello()
     {
-        Console.WriteLine($"Hi! my name is {NomeDoObama}");
-        Console.WriteLine($"Meu pet é um {PresidentialPet.GetType().Name}");
+        Console.WriteLine($"This is a {NomeDoPrograma}");
+        Console.WriteLine($"Meu serviço é o {loginService.GetType().Name}");
+        Console.WriteLine($"e ele usa o {loginService.tokenManager.GetType().Name}");
     }
 }
