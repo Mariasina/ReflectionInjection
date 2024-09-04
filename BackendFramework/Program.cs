@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using InjectionLib;
+﻿using InjectionLib;
 
 var manager = new DependenciesManager<RestController>();
 
@@ -27,7 +26,6 @@ public class DependenciesConfiguration {
 }
 
 
-[RestController]
 public class President {
 
     [Injected]

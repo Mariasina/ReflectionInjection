@@ -2,13 +2,22 @@ using System.Reflection;
 
 namespace InjectionLib;
 
-public class DependenciesManager<A> where A : Attribute
+public class DependenciesManager<R> where R : Attribute
 {
     private Dictionary<object, object> dependencies = new();
     private Dictionary<object, object> rootDependencies = new();
 
     public T Get<T>()
-        => (T)rootDependencies[typeof(T)];
+    {
+        try
+        {
+            return (T)rootDependencies[typeof(T)];
+        }
+        catch (Exception)
+        {
+            throw new RootNotFoundException();
+        }   
+    }
 
     public DependenciesManager()
     {
@@ -17,7 +26,7 @@ public class DependenciesManager<A> where A : Attribute
         var configs = FilterAttribute<ConfigurationAttribute>(types);
         ConfigureBeans(configs);
 
-        var roots = FilterAttribute<A>(types);
+        var roots = FilterAttribute<R>(types);
         foreach (var root in roots)
         {
             var constructor = root.GetConstructor(Array.Empty<Type>()) 

@@ -21,3 +21,9 @@ public class InjectedWithoutSetMethod : Exception
     public InjectedWithoutSetMethod()
         : base("Your injecteds cannot be readonly, you must provide a set method") {}
 }
+
+public class RootNotFoundException : Exception
+{
+    public RootNotFoundException()
+        : base("That type hasn't been declared with the root attribute") {}
+}
