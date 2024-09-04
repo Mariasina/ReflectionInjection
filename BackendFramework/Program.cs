@@ -2,12 +2,10 @@
 
 var manager = new DependenciesManager<RestController>();
 
-var obama = manager.Get<AuthController>();
-
-obama.SayHello();
+var controller = manager.Get<AuthController>();
+controller.SayHello();
 
 public abstract class Service {}
-
 
 public class Login : Service {
 

@@ -7,7 +7,7 @@ public class NoEmptyConstructorException : Exception
 public class DuplicatedDepencyTypeException : Exception 
 {
     public DuplicatedDepencyTypeException()
-        : base("You cannot have two beans with the same return type.") {}
+        : base("You cannot have two beans with the same return type. How the fuck are we suposed to know which one to give you morons") {}
 }
 
 public class BeanNotFoundException : Exception
